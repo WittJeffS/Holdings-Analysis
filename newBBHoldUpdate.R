@@ -12,13 +12,12 @@ library(dplyr)
 library(magrittr)
 library(stringr)
 
-
+# pull consolidated BBHoldings files
 dir.files <- 'G:/Axys/BBHoldings/Historical' %>%  dir
-
 agg.files <- dir.files  %>%  str_count('\\+')  %>%  as.logical 
-     
 agg.files <- dir.files[agg.files]
 
+# save dates in yyyymmdd format
 nms <- str_sub(agg.files, 17, 22)
 nms <- as.Date(nms, format = '%m%d%y')
 nms <- format(nms, format = '%Y%m%d')
