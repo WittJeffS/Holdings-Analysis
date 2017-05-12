@@ -44,26 +44,23 @@ agg.hold.df     <- merge(agg.hold.df, sec.info,
                          by    = 'id', 
                          all.x = TRUE)
 
+# reorder and format data.frame
 agg.hold.df$holding <- as.numeric(gsub(',','',agg.hold.df$holding))
+agg.hold.df$date    <- as.Date(agg.hold.df$date, format = '%m/%d/%y')
+agg.hold.df         <- agg.hold.df[order(agg.hold.df$date),]
 
-agg.hold.df$date <- as.Date(agg.hold.df$date, format = '%m/%d/%y')
-agg.hold.df <- agg.hold.df[order(agg.hold.df$date),]
-
+# assign missing security types
 agg.hold.df$type[which(agg.hold.df$id == 'cash_usd')] <- 'ca'
 agg.hold.df$type[is.na(agg.hold.df$type)] <- 'no-type'
 
-
+# split data.frame by type
 agg.hold.tick   <- split(agg.hold.df, agg.hold.df$type)
  
+# split common stock data.frame by issuer
 xx <- agg.hold.tick[['cs']]
 xx <- split(xx, xx$id)
 agg.hold.tick[['cs']] <- xx
 
-plotHoldings <- function(tick){
-     xx <- agg.hold.tick$cs[[tick]]
-     
-     p <- ggplot(xx, aes(date, holding)) + geom_line()
-     
-     return (p)
-}
+# save list to working directory
+save(agg.hold.tick, file = 'agg.hold.tick.RData')
 
