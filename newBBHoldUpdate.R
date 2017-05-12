@@ -1,10 +1,19 @@
+######################################################################
+######################################################################
+
+# Creates a list of historic holdings history organized by holding 
+# type and security id.
+
+######################################################################
+######################################################################
+
+
 library(dplyr)
 library(magrittr)
 library(stringr)
 
 
-dir.files <- 'G:/Axys/BBHoldings/Historical' %>% 
-     dir
+dir.files <- 'G:/Axys/BBHoldings/Historical' %>%  dir
 
 agg.files <- dir.files  %>%  str_count('\\+')  %>%  as.logical 
      
